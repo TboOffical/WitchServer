@@ -18,6 +18,30 @@ The server will look for a index.html
 file when "/" is acessed so make sure to have that created<br>
 Nothing happens if you dont, you just get a error
 
+# Benchmarks
+
+Tested on template : https://templatemo.com/tm-565-onix-digital<br>
+Its a big templates with lots of content to loade
+
+<table>
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>Speed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Witch</td>
+      <td>2.19s</td>
+    </tr>
+    <tr>
+      <td>Nginx</td>
+      <td>3.11</td>
+    </tr>
+  </tbody>
+</table>
+
 # ToDo List
 
 - [x] Basic File loading and routeing
