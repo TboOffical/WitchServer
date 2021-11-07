@@ -21,7 +21,7 @@ Nothing happens if you dont, you just get a error
 # Benchmarks
 
 Tested on template : https://templatemo.com/tm-565-onix-digital<br>
-Its a big templates with lots of content to loade
+Its a big templates with lots of content to load in
 
 <table>
   <thead>
