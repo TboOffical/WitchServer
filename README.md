@@ -51,5 +51,5 @@ Its a big templates with lots of content to load in
 - [ ] Status gui
 - [ ] templateing based on json
 
-This list is bond to grow, and fast. <br>
+This list is going to grow, and fast. <br>
 So if there is a missing feature it will be on here soon
