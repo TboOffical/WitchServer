@@ -18,6 +18,19 @@ The server will look for a index.html
 file when "/" is acessed so make sure to have that created<br>
 Nothing happens if you dont, you just get a error
 
+You can create a witch cofig file by createing the file<br>
+witch.json in the dirictory that the server exe is in.
+
+```
+//witch.json
+{
+  "/route" : "file.html",
+  "/whatever" : "sdfsdf.html"
+}
+```
+More options comeing in the future for things like
+POST requests
+
 # Benchmarks
 
 Tested on template : https://templatemo.com/tm-565-onix-digital<br>
