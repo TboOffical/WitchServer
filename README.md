@@ -7,7 +7,7 @@ If you want to try the unstable, you will have to build it.<br>
 
 # How to build witch
 Windows / Mac / Linux
-```
+```bash
 cd witch
 go get -u github.com/gen2brain/dlgs
 go build ./witch.go
@@ -21,15 +21,26 @@ Nothing happens if you dont, you just get a error
 You can create a witch cofig file by createing the file<br>
 witch.json in the dirictory that the server exe is in.
 
-```
-//witch.json
+```json
 {
   "/route" : "file.html",
   "/whatever" : "sdfsdf.html"
 }
 ```
 More options comeing in the future for things like
-POST requests
+POST requests<br>
+
+You can also add a ssl certificate now by creating a file
+named cert.json<br>
+Once created, put in the location of your cert and key file and witch will do the rest
+```json
+{
+    "enableTLS": true,
+    "crt_file": "localhost.cert",
+    "key_file": "localhost.key"
+}
+```
+if witch dose not find the file, it will start with no ssl
 
 # Benchmarks
 
