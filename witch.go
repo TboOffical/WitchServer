@@ -2,12 +2,21 @@ package main
 
 //start by importing the nessery libs for the app to work properly
 import (
+	"crypto/tls"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"os"
 
 	"github.com/gen2brain/dlgs"
 )
+
+type Certificate struct {
+	EnableTLS bool
+	Crt_file  string
+	Key_file  string
+}
 
 func main() {
 	//find the number of args there are
@@ -25,6 +34,11 @@ func main() {
 	//so we can span a tcp listener
 	_PORT := ""
 	_host := "localhost"
+	certFail := 0
+	var cert tls.Certificate
+
+	//shhhhhh
+	_ = cert
 
 	//if we did not input any args, display a gui box asking us for a port
 	// I know nothing about gui stuff so i used this lib : gen2brain/dlgs
@@ -39,8 +53,35 @@ func main() {
 		_PORT = os.Args[1]
 	}
 
+	var jsonCert Certificate
+	rawJson, err := ioutil.ReadFile("cert.json")
+	if err != nil {
+		certFail = 1
+
+	} else {
+		err = json.Unmarshal(rawJson, &jsonCert)
+		if err != nil {
+			println("Failed to read json")
+		}
+
+		cert, err = tls.LoadX509KeyPair(jsonCert.Crt_file, jsonCert.Key_file)
+		if err != nil {
+			certFail = 1
+			fmt.Println(err)
+		}
+	}
+
 	//get a TCP4 listener goin
-	l, err := net.Listen("tcp4", _host+":"+_PORT)
+
+	var l net.Listener
+
+	if certFail != 1 {
+		config := &tls.Config{Certificates: []tls.Certificate{cert}}
+		l, err = tls.Listen("tcp4", _host+":"+_PORT, config)
+	} else {
+		l, err = net.Listen("tcp4", _host+":"+_PORT)
+	}
+
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
 		os.Exit(1)
@@ -52,13 +93,20 @@ func main() {
 	println("| |     / /  _/_  __/ ____/ / / /	")
 	println("| | /| / // /  / / / /   / /_/ / 	")
 	println("| |/ |/ // /  / / / /___/ __  /  	")
-	println("|__/|__/___/ /_/  /____/_/ /_/   	")
+	println("|__/|__/___/ /_/  /____/_/ /_/   	\n")
 
-	//tell the user that we are starting up
-	println("Starting Witch...")
+	//tell the user that we are started up
+	println("Witch Started")
 
 	println("Now Listening For new Connections On Port " + _PORT)
 	println("Acccess The Server by navigateing to http://localhost:" + _PORT + " In Your Web Browser")
+
+	if certFail == 1 {
+		println("No certificate was loaded")
+	} else {
+		println("Loaded certificate sucessfully")
+	}
+
 	println("----------------------------------------------------------------------------")
 
 	//for ever connection spawn a new listener

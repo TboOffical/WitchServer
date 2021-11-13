@@ -20,7 +20,6 @@ func handleConnection(conn net.Conn) {
 	//get the first line of the http request
 	//This will tell us the type of request and the route
 	request_first_line := scanner.Text()
-
 	//defineing some differnt headers for different content types
 	headers := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\n\n"
 	//headerscss := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/css,*/*;q=0.1;\n\n"
@@ -30,9 +29,6 @@ func handleConnection(conn net.Conn) {
 
 	//the request type is the first string
 	request_type := ereq[0]
-
-	//log it becaquse it is usefull for debug purpuses
-	println("Request Type is " + request_type)
 
 	//if we have a get request or a post request
 	if request_type == "GET" && ereq[1] != "/" || request_type == "POST" && ereq[1] != "/" {
