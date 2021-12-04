@@ -10,7 +10,7 @@ Windows / Mac / Linux
 ```bash
 cd witch
 go get -u github.com/gen2brain/dlgs
-go build ./witch.go
+go build ./witch.go ./util.go ./listener.go
 ```
 
 # Information
