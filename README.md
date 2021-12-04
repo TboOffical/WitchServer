@@ -69,9 +69,9 @@ Its a big templates with lots of content to load in
 # ToDo List
 
 - [x] Basic File loading and routeing
-- [ ] custom routes based on json file
+- [x] custom routes based on json file
 - [ ] php? or altertive
-- [ ] HTTPS!
+- [x] HTTPS!
 - [ ] Status gui
 - [ ] templateing based on json
 
