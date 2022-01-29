@@ -1,37 +1,79 @@
-## Welcome to GitHub Pages
+# WitchServer
+The witch Web server, Written in golang<br>
+This is a work-in-progress. So code might be a bit messy.<br>
+I will only release the working, stable versions of of witch.<br>
+If you want to try the unstable, you will have to build it.<br>
+> Why is it named witch, welp https://randomwordgenerator.com/
 
-You can use the [editor on GitHub](https://github.com/TboOffical/WitchServer/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+# How to build witch
+Windows / Mac / Linux
+```bash
+cd witch
+go get -u github.com/gen2brain/dlgs
+go build ./witch.go ./util.go ./listener.go
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+# Information
+The server will look for a index.html
+file when "/" is acessed so make sure to have that created<br>
+Nothing happens if you dont, you just get a error
 
-### Jekyll Themes
+You can create a witch cofig file by createing the file<br>
+witch.json in the dirictory that the server exe is in.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/TboOffical/WitchServer/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```json
+{
+  "/route" : "file.html",
+  "/whatever" : "sdfsdf.html"
+}
+```
+More options comeing in the future for things like
+POST requests<br>
 
-### Support or Contact
+You can also add a ssl certificate now by creating a file
+named cert.json<br>
+Once created, put in the location of your cert and key file and witch will do the rest
+```json
+{
+    "enableTLS": true,
+    "crt_file": "localhost.cert",
+    "key_file": "localhost.key"
+}
+```
+if witch dose not find the file, it will start with no ssl
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+# Benchmarks
+
+Tested on template : https://templatemo.com/tm-565-onix-digital<br>
+Its a big templates with lots of content to load in
+
+<table>
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>Speed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Witch</td>
+      <td>2.19s</td>
+    </tr>
+    <tr>
+      <td>Nginx</td>
+      <td>3.11</td>
+    </tr>
+  </tbody>
+</table>
+
+# ToDo List
+
+- [x] Basic File loading and routeing
+- [x] custom routes based on json file
+- [ ] php? or altertive
+- [x] HTTPS!
+- [ ] Status gui
+- [ ] templateing based on json
+
+This list is going to grow, and fast. <br>
+So if there is a missing feature it will be on here soon
