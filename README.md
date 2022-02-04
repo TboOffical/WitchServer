@@ -12,9 +12,11 @@ cd witch
 go get -u github.com/gen2brain/dlgs
 go build ./witch.go ./util.go ./listener.go
 ```
+## New
 # Witch DevServer
 The easy way to get started with frontend web dev using the witch server
-<img src="https://raw.githubusercontent.com/TboOffical/WitchServer/main/DevServer.png">
+<img src="https://raw.githubusercontent.com/TboOffical/WitchServer/main/DevServer.png"><br>
+Just add the path to your app, a port number and your set!
 
 # Information
 The server will look for a index.html
