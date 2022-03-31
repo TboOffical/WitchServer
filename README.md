@@ -2,7 +2,6 @@
 
 # WitchServer
 The witch Web server, Written in golang<br>
-This is a work-in-progress. So code might be a bit messy.<br>
 I will only release the working, stable versions of of witch.<br>
 If you want to try the unstable, you will have to build it.<br>
 > Why is it named witch, welp https://randomwordgenerator.com/
