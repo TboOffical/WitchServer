@@ -1,3 +1,5 @@
+<img width="50%" src="https://raw.githubusercontent.com/TboOffical/WitchServer/main/logo.png">
+
 # WitchServer
 The witch Web server, Written in golang<br>
 This is a work-in-progress. So code might be a bit messy.<br>
