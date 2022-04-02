@@ -27,8 +27,26 @@ func main() {
 	if argLength == 1 && os.Args[1] == "help" {
 		println("To start using witch, simply execute")
 		println("./witch <port>")
+		println("To set cutsom routes, create a witch.json file with the following structure")
+		println(`
+{
+	"/route" : "something.html"
+}
+			`)
+		println("To load a certificate, create cert.json with the following structure")
+		println(`
+{
+	"enableTLS": true,
+	"crt_file": "localhost.cert",
+	"key_file": "localhost.key"
+}
+		`)
 		return
 	}
+
+	//defineing some colors to use
+	colorGreen := "\033[32m"
+	colorCyan := "\033[36m"
 
 	//Set the port and host varibals
 	//so we can span a tcp listener
@@ -88,6 +106,9 @@ func main() {
 	}
 	defer l.Close()
 
+	//load the witch.json config
+	LoadConfig()
+
 	//FANCY
 	println(" _       ____________________  __	")
 	println("| |     / /  _/_  __/ ____/ / / /	")
@@ -96,10 +117,16 @@ func main() {
 	println("|__/|__/___/ /_/  /____/_/ /_/   	\n")
 
 	//tell the user that we are started up
-	println("Witch Started")
+	println(string(colorGreen) + "Witch Started")
 
-	println("Now Listening For new Connections On Port " + _PORT)
-	println("Acccess The Server by navigateing to http://localhost:" + _PORT + " In Your Web Browser")
+	println(string(colorCyan) + "Now Listening For new Connections On Port " + _PORT + "\033[0m")
+
+	if certFail == 1 {
+		println("Acccess The Server by navigateing to http://localhost:" + _PORT + " In Your Web Browser")
+	} else {
+		println("Acccess The Server by navigateing to https://localhost:" + _PORT + " In Your Web Browser")
+
+	}
 
 	if certFail == 1 {
 		println("No certificate was loaded")

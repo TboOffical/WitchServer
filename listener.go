@@ -10,6 +10,18 @@ import (
 	"time"
 )
 
+var (
+	rMap        map[string]string
+	JsonData, _ []byte
+)
+
+func LoadConfig() {
+	rMap = make(map[string]string)
+	JsonData, _ = ioutil.ReadFile("witch.json")
+
+	json.Unmarshal(JsonData, &rMap)
+}
+
 func handleConnection(conn net.Conn) {
 	dt := time.Now()
 
@@ -31,18 +43,45 @@ func handleConnection(conn net.Conn) {
 	request_type := ereq[0]
 
 	//if we have a get request or a post request
-	if request_type == "GET" && ereq[1] != "/" || request_type == "POST" && ereq[1] != "/" {
-		rMap := make(map[string]string)
-		JsonData, _ := ioutil.ReadFile("witch.json")
+	if request_type == "GET" && ereq[1] != "/" {
 
-		json.Unmarshal(JsonData, &rMap)
 		for route, file := range rMap {
 			if ereq[1] == route {
-				serverFile(conn, "/"+file)
+				if strings.Contains(file, ".wba") {
+					go handleWBA(conn, file, "GET")
+					return
+				}
+				go serverFile(conn, "/"+file)
+				return
 			}
 		}
 
-		serverFile(conn, ereq[1])
+		if strings.Contains(ereq[1], ".wba") {
+			conn.Write([]byte(headers + "<title>Witch -> Access Denied</title><center><img style='height:100%; width: auto;' src='https://i.imgur.com/MUwWC0m.png' </center>"))
+			colorRed := "\033[31m"
+			println(colorRed + "Client " + conn.RemoteAddr().String() + " Has Attempted to access backend file " + ereq[1] + "\033[0m")
+			conn.Close()
+			return
+		}
+		go serverFile(conn, ereq[1])
+		return
+	}
+
+	if request_type == "POST" && ereq[1] != "/" {
+		for route, file := range rMap {
+			if ereq[1] == route {
+
+				if strings.Contains(file, ".wba") {
+					go handleWBA(conn, file, "POST")
+					return
+				}
+			}
+		}
+
+		responceNoIndex := headers + "<title>Witch -> Cant Find file</title><center><img style='border-top: groove;' src='https://i.imgur.com/j5GlneF.png' </center>"
+		conn.Write([]byte(responceNoIndex))
+		conn.Close()
+
 		return
 	}
 

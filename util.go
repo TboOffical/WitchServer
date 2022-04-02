@@ -22,8 +22,8 @@ func serverFile(conn net.Conn, file string) {
 	dt := time.Now()
 
 	//defineing some differnt headers for different content types
-	headers := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\n\n"
-	headerscss := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/css,*/*;q=0.1;\n\n"
+	headers := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\nx-frame-options: SAMEORIGIN\n\n"
+	headerscss := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/css,*/*;q=0.1;\nx-frame-options: SAMEORIGIN\n\n"
 
 	println("Loading In file -> " + file)
 
