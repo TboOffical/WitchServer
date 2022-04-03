@@ -11,7 +11,7 @@ Windows / Mac / Linux
 ```bash
 cd witch
 go get -u github.com/gen2brain/dlgs
-go build ./witch.go ./util.go ./listener.go
+go build ./witch.go ./util.go ./wba.go ./listener.go
 ```
 ## New
 # Witch DevServer
