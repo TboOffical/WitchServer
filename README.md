@@ -83,3 +83,29 @@ Its a big templates with lots of content to load in
 
 This list is going to grow, and fast. <br>
 So if there is a missing feature it will be on here soon
+
+## Cotainerisation
+
+### Install && Usages
+
+```bash
+git clone https://github.com/mauricelambert/WitchContainer.git
+docker build . -t witch:latest
+docker run -d -p 8000:8000 witch:latest
+```
+
+#### Test container with DockerHub
+
+```bash
+docker run --rm -it -p 8000:8000 mauricelambert/witch:latest bash
+```
+
+#### Request using curl
+
+```bash
+curl 127.0.0.1:8000
+```
+
+### Link
+
+ - https://github.com/mauricelambert/WitchContainer
