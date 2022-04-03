@@ -122,9 +122,9 @@ func main() {
 	println(string(colorCyan) + "Now Listening For new Connections On Port " + _PORT + "\033[0m")
 
 	if certFail == 1 {
-		println("Acccess The Server by navigateing to http://localhost:" + _PORT + " In Your Web Browser")
+		println("Acccess The Server by navigateing to http://" + _host + ":" + _PORT + " In Your Web Browser")
 	} else {
-		println("Acccess The Server by navigateing to https://localhost:" + _PORT + " In Your Web Browser")
+		println("Acccess The Server by navigateing to https://" + _host + ":" + _PORT + " In Your Web Browser")
 
 	}
 
