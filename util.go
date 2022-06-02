@@ -18,6 +18,11 @@ func trimFirstRune(s string) string {
 	return ""
 }
 
+func generate_status_headers(code int) string {
+	dt := time.Now()
+	return "HTTP/1.1 " + fmt.Sprint(code) + " OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\nx-frame-options: SAMEORIGIN\n\n"
+}
+
 func serverFile(conn net.Conn, file string) {
 	dt := time.Now()
 
@@ -33,7 +38,7 @@ func serverFile(conn net.Conn, file string) {
 	if err != nil {
 		//if we cant find it error
 		fmt.Println("No File Found " + file)
-		responceNoIndex := headers + "<title>Witch -> Cant Find file</title><center><img style='border-top: groove;' src='https://i.imgur.com/j5GlneF.png' </center>"
+		responceNoIndex := generate_status_headers(404) + "<title>Witch -> Cant Find file</title><center><img style='border-top: groove;' src='https://i.imgur.com/j5GlneF.png' </center>"
 		conn.Write([]byte(responceNoIndex))
 		conn.Close()
 		return
