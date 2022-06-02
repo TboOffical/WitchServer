@@ -74,6 +74,9 @@ Its a big templates with lots of content to load in
 
 # ToDo List
 
+Moved to
+https://github.com/users/TboOffical/projects/1/views/1
+
 - [x] Basic File loading and routeing
 - [x] custom routes based on json file
 - [ ] php? or altertive
