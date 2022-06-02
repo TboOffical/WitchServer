@@ -32,6 +32,13 @@ func handleConnection(conn net.Conn) {
 	//get the first line of the http request
 	//This will tell us the type of request and the route
 	request_first_line := scanner.Text()
+
+	if request_first_line == "GET" || request_first_line == "POST" {
+		println("Bad activity detected at " + conn.RemoteAddr().String())
+		conn.Close()
+		return
+	}
+
 	//defineing some differnt headers for different content types
 	headers := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\n\n"
 	//headerscss := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/css,*/*;q=0.1;\n\n"
