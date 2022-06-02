@@ -24,6 +24,7 @@ func serverFile(conn net.Conn, file string) {
 	//defineing some differnt headers for different content types
 	headers := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\nx-frame-options: SAMEORIGIN\n\n"
 	headerscss := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/css,*/*;q=0.1;\nx-frame-options: SAMEORIGIN\n\n"
+	headersjs := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: application/javascript,*/*;q=0.1;\nx-frame-options: SAMEORIGIN\n\n"
 
 	println("Loading In file -> " + file)
 
@@ -44,6 +45,15 @@ func serverFile(conn net.Conn, file string) {
 	//if it is a css file add the css content type
 	if strings.Contains(file, ".css") {
 		responce_texts := headerscss + string(content)
+
+		//send it over to the client and end the connection.
+		conn.Write([]byte(responce_texts))
+		conn.Close()
+		return
+	}
+
+	if strings.Contains(file, ".js") {
+		responce_texts := headersjs + string(content)
 
 		//send it over to the client and end the connection.
 		conn.Write([]byte(responce_texts))
