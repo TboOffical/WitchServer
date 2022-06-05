@@ -13,7 +13,7 @@ func handleWBA(conn net.Conn, file string, requestType string) {
 	println("WBA -> Handleing file " + file)
 	if requestType == "POST" {
 
-		conn.Write([]byte(headers + string("WBA is not yet finished")))
+		conn.Write([]byte(generate_status_headers(405) + string("WBA is not yet finished")))
 		conn.Close()
 		return
 	} else {

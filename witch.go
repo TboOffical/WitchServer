@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net"
 	"os"
+	"strings"
 
 	"github.com/gen2brain/dlgs"
 )
@@ -19,6 +20,9 @@ type Certificate struct {
 }
 
 func main() {
+	//call the exit listener
+	exit_listener()
+
 	//find the number of args there are
 	argLength := len(os.Args[1:])
 
@@ -105,6 +109,24 @@ func main() {
 		os.Exit(1)
 	}
 	defer l.Close()
+
+	witch_script_in_use := 0
+	witch_scripts := []string{}
+
+	files, _ := ioutil.ReadDir(".")
+	for file := range files {
+		if strings.Contains(files[file].Name(), ".wba") {
+			witch_script_in_use = 1
+			witch_scripts = append(witch_scripts, files[file].Name())
+		}
+	}
+
+	if witch_script_in_use == 1 {
+		os.Mkdir("./script-bin", 0755)
+		for script := range witch_scripts {
+			println(witch_scripts[script])
+		}
+	}
 
 	//load the witch.json config
 	LoadConfig()

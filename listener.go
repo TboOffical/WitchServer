@@ -35,12 +35,12 @@ func handleConnection(conn net.Conn) {
 
 	if request_first_line == "GET" || request_first_line == "POST" {
 		println("Bad activity detected at " + conn.RemoteAddr().String())
+		conn.Write([]byte(generate_status_headers(400) + "WitchFX <br> Thats not quite Right"))
 		conn.Close()
 		return
 	}
 
 	//defineing some differnt headers for different content types
-	headers := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\n\n"
 	//headerscss := "HTTP/1.1 200 OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/css,*/*;q=0.1;\n\n"
 
 	//split up the first line on spaces so we can get the differnt values
@@ -50,6 +50,13 @@ func handleConnection(conn net.Conn) {
 	request_type := ereq[0]
 
 	//if we have a get request or a post request
+
+	if len(ereq[1]) > 255 {
+		conn.Write([]byte(generate_status_headers(414) + genereate_err_html("The URL was way too long for the server to safey continue", 414)))
+		conn.Close()
+		return
+	}
+
 	if request_type == "GET" && ereq[1] != "/" {
 
 		for route, file := range rMap {
@@ -64,7 +71,7 @@ func handleConnection(conn net.Conn) {
 		}
 
 		if strings.Contains(ereq[1], ".wba") {
-			conn.Write([]byte(headers + "<title>Witch -> Access Denied</title><center><img style='height:100%; width: auto;' src='https://i.imgur.com/MUwWC0m.png' </center>"))
+			conn.Write([]byte(generate_status_headers(401) + genereate_err_html("This is a important backend find that end useres dont have access to. <br> If you are the owner, create a route in witch.json to this file", 401)))
 			colorRed := "\033[31m"
 			println(colorRed + "Client " + conn.RemoteAddr().String() + " Has Attempted to access backend file " + ereq[1] + "\033[0m")
 			conn.Close()
@@ -85,7 +92,7 @@ func handleConnection(conn net.Conn) {
 			}
 		}
 
-		responceNoIndex := headers + "<title>Witch -> Cant Find file</title><center><img style='border-top: groove;' src='https://i.imgur.com/j5GlneF.png' </center>"
+		responceNoIndex := generate_status_headers(404) + genereate_err_html("The index.html file could not be located. <br> If you are the owner, create the file. Or route '/' to a different file <br> in witch.json", 404)
 		conn.Write([]byte(responceNoIndex))
 		conn.Close()
 
@@ -96,7 +103,7 @@ func handleConnection(conn net.Conn) {
 	contenti, err := ioutil.ReadFile("index.html")
 	if err != nil {
 		fmt.Println("No Index.html File Found")
-		responceNoIndex := headers + "<title>Witch -> Cant Find file</title><center><img style='border-top: groove;' src='https://i.imgur.com/GJIUMVC.png' </center>"
+		responceNoIndex := generate_status_headers(404) + genereate_err_html("The index.html file could not be located. <br> If you are the owner, create the file. Or route '/' to a different file <br> in witch.json", 404)
 		conn.Write([]byte(responceNoIndex))
 		conn.Close()
 		return

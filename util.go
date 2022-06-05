@@ -4,9 +4,23 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 	"time"
 )
+
+func exit_listener() {
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		fmt.Println("\033[31m\r* Cleaning Up... *\033[0m")
+		os.Remove("./script-bin")
+		os.Exit(0)
+	}()
+}
 
 func trimFirstRune(s string) string {
 	for i := range s {
@@ -21,6 +35,32 @@ func trimFirstRune(s string) string {
 func generate_status_headers(code int) string {
 	dt := time.Now()
 	return "HTTP/1.1 " + fmt.Sprint(code) + " OK\nDate:" + dt.String() + "\nServer:WitchFX\nContent-Type: text/html;\nx-frame-options: SAMEORIGIN\n\n"
+}
+
+func genereate_err_html(err string, code int) string {
+	html := `
+		<html>
+			<head>
+				<title>Witch Server - Error</title>
+			</head>
+			<body>
+				<center>
+				<img src="https://raw.githubusercontent.com/TboOffical/WitchServer/main/logo.png" width="50%">
+				<h1>` + fmt.Sprint(code) + `, Thats a error</h1>
+				<h2>` + err + `</h2>
+				</center>
+				<style>
+					@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&family=Roboto:wght@100&display=swap');
+
+					body{
+						font-family: 'Montserrat', sans-serif;
+					}
+
+				</style>
+			</body>
+		</html>
+	`
+	return html
 }
 
 func serverFile(conn net.Conn, file string) {
@@ -38,7 +78,7 @@ func serverFile(conn net.Conn, file string) {
 	if err != nil {
 		//if we cant find it error
 		fmt.Println("No File Found " + file)
-		responceNoIndex := generate_status_headers(404) + "<title>Witch -> Cant Find file</title><center><img style='border-top: groove;' src='https://i.imgur.com/j5GlneF.png' </center>"
+		responceNoIndex := generate_status_headers(404) + genereate_err_html("That file could not be located. <br> If you are the owner, create the file. Or route '"+file+"' to a different file <br> in witch.json", 404)
 		conn.Write([]byte(responceNoIndex))
 		conn.Close()
 		return
