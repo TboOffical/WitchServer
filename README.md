@@ -14,6 +14,14 @@ go get -u github.com/gen2brain/dlgs
 go build ./witch.go ./util.go ./wba.go ./listener.go
 ```
 ## New
+# WBA
+In the begining, I wanted witch to support PHP. But the I had a thought, what if witch
+allowed people to write PHP like apps. But with Go instead of the... Intresting, Launage that people call PHP.
+If you want to get started with It I recomend reading some of the Wiki entrys about it. 
+**Example**
+<br>
+<img width="50%" src="https://i.imgur.com/74ePnNf.png">
+
 # Witch DevServer
 The easy way to get started with frontend web dev using the witch server
 <img src="https://raw.githubusercontent.com/TboOffical/WitchServer/main/DevServer.png"><br>
