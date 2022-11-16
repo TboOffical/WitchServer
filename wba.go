@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"net"
+	"os/exec"
 	"time"
 )
 
@@ -13,12 +15,50 @@ func handleWBA(conn net.Conn, file string, requestType string) {
 	println("WBA -> Handleing file " + file)
 	if requestType == "POST" {
 
-		conn.Write([]byte(generate_status_headers(405) + string("WBA is not yet finished")))
+		cmd := exec.Command("./script-bin/"+file+".exe", "post")
+
+		pipe, err := cmd.StdoutPipe()
+		if err != nil {
+			println("Failed to run script " + file)
+			println(err.Error())
+			conn.Close()
+			return
+		}
+		err = cmd.Start()
+		if err != nil {
+			print("Failed to run script " + file)
+			conn.Close()
+			return
+		}
+
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(pipe)
+
+		conn.Write([]byte(headers + string(buf.String())))
 		conn.Close()
 		return
 	} else {
 
-		conn.Write([]byte(headers))
+		cmd := exec.Command("./script-bin/"+file+".exe", "get")
+
+		pipe, err := cmd.StdoutPipe()
+		if err != nil {
+			println("Failed to run script " + file)
+			println(err.Error())
+			conn.Close()
+			return
+		}
+		err = cmd.Start()
+		if err != nil {
+			print("Failed to run script " + file)
+			conn.Close()
+			return
+		}
+
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(pipe)
+
+		conn.Write([]byte(headers + string(buf.String())))
 		conn.Close()
 		return
 	}

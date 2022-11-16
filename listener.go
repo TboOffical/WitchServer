@@ -20,6 +20,10 @@ func LoadConfig() {
 	JsonData, _ = ioutil.ReadFile("witch.json")
 
 	json.Unmarshal(JsonData, &rMap)
+
+	//for str, index := range rMap {
+	//println(str, index)
+	//}
 }
 
 func handleConnection(conn net.Conn) {
@@ -48,6 +52,13 @@ func handleConnection(conn net.Conn) {
 
 	//the request type is the first string
 	request_type := ereq[0]
+
+	// recovers panic
+	defer func() {
+		if e := recover(); e != nil {
+			fmt.Println("Recovered from panic")
+		}
+	}()
 
 	//if we have a get request or a post request
 

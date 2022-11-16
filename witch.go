@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/gen2brain/dlgs"
@@ -121,11 +122,53 @@ func main() {
 		}
 	}
 
+	fmt.Print("\033[H\033[2J")
+	println("\033[31m\r* Witch Pre-Init Process *\033[0m")
+
 	if witch_script_in_use == 1 {
 		os.Mkdir("./script-bin", 0755)
 		for script := range witch_scripts {
-			println(witch_scripts[script])
+			println("Compileing Script : " + witch_scripts[script])
+			script_data, err := ioutil.ReadFile(witch_scripts[script])
+			if err != nil {
+				println("Failed!")
+				break
+			}
+			script_temp := RandomString(20)
+			ioutil.WriteFile(script_temp+".go", []byte(`
+			package main
+			import "os"
+			`+string(script_data)+
+				`
+			const (
+				request_get     = "get"
+				request_post    = "post"
+				requets_unknown = "unknown"
+			)
+			
+			func request_type() string {
+				if len(os.Args) < 2 {
+					return "unknown"
+				}
+				if os.Args[1] == "get" {
+					return "get"
+				}
+				if os.Args[1] == "post" {
+					return "post"
+				}
+				return "unknown"
+			}			
+
+			`), 0644)
+			cmd, err := exec.Command("go", "build", "-o", "./script-bin/"+witch_scripts[script]+".exe", script_temp+".go").Output()
+			if err != nil {
+				println("Failed!")
+			}
+			println(string(cmd))
+			os.Remove(script_temp + ".go")
 		}
+
+		fmt.Print("\033[H\033[2J")
 	}
 
 	//load the witch.json config

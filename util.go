@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
+	"math/rand"
 	"net"
 	"os"
 	"os/signal"
@@ -11,13 +13,26 @@ import (
 	"time"
 )
 
+func RandomString(n int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+	s := make([]rune, n)
+	for i := range s {
+		s[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(s)
+}
+
 func exit_listener() {
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
 		fmt.Println("\033[31m\r* Cleaning Up... *\033[0m")
-		os.Remove("./script-bin")
+		err := os.RemoveAll("./script-bin")
+		if err != nil {
+			log.Fatal(err)
+		}
 		os.Exit(0)
 	}()
 }
