@@ -81,19 +81,7 @@ Its a big templates with lots of content to load in
 </table>
 
 # ToDo List
-
-Moved to
 https://github.com/users/TboOffical/projects/1/views/1
-
-- [x] Basic File loading and routeing
-- [x] custom routes based on json file
-- [ ] php? or altertive
-- [x] HTTPS!
-- [ ] Status gui
-- [ ] templateing based on json
-
-This list is going to grow, and fast. <br>
-So if there is a missing feature it will be on here soon
 
 ## Cotainerisation
 
